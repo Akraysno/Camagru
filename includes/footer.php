@@ -1,0 +1,1 @@
+<div id="footer"><p id="copy">© gauffret - 2017</p></div>

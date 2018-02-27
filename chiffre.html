@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>Vigenere</title>
+		<meta charset="utf-8">
+		<style>
+			html, body {
+				padding: 0;
+				margin: 0;
+				background-color: black;
+			}
+			textarea {
+				height: 200px;
+				resize: none;
+				border: 0px;
+
+			}
+			hr {
+				border: 1px solid #DDD;
+				width: 90%;
+			}
+			#input {
+				width: 100%;
+				display: flex;
+				align-content: stretch;
+				justify-content: center;
+				margin: 2px;
+			}
+			.textarea {
+				width: 100%;
+				background-color: white;
+				display: flex;
+				flex-wrap: nowrap;
+				flex-direction: column;
+				text-align: center;
+				align-content: stretch;
+				margin: 2px;
+			}
+			input[type="text"]:focus, input[type="password"]:focus, textarea:focus{
+				outline: none;
+			}
+			#valid {
+				color: wheat;
+				text-align: center;
+			}
+			button.crypt, button.uncrypt{
+				border-radius: 0px;
+				width: 100px;
+				height: 50px;
+			}
+			button.crypt {
+				background-color: darkseagreen;
+			}
+			button.uncrypt {
+				background-color: skyblue;
+			}
+			@media screen and (max-width: 640px) {
+				#input {
+					flex-wrap: wrap;
+				}
+			}
+		</style>
+	</head>
+	<div id="loading"></div>
+	<body>
+		<div id="main">
+			<div id="input_block">
+				<div id="input">
+					<div class="textarea">
+						<span>Entrée</span>
+						<hr />
+						<textarea id="input_text"></textarea>
+					</div>
+
+					<div class="textarea">
+						<span>Clé</span>
+						<hr />
+						<textarea id="input_key"></textarea>
+					</div>
+				</div>
+				<div id="valid">
+					<button class="crypt" onclick="chiffre()">Chiffrer</button>
+					<button class="uncrypt" onclick="dechiffre()">Déchiffrer</button>
+				</div>
+			</div>
+			<div id="output textarea">
+				<div class="textarea">
+					<span>Sortie</span>
+					<hr />
+					<textarea id="output_text" disabled></textarea>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+	<script>
+		function chiffre() {
+			var text = $('#input_text').val();
+			var key = $('#input_key').val();
+			var output = "";
+			var i_key = 0;
+			var	char = "";
+			var char_val = 0;
+
+			// Caracteres traduit [0-9a-z-A-Z] èéêëēėę àáâäãåā ÿ ûüùúū îïíīįì ôöòóøōõ œ æ śš ł žźż çćč ñń
+			console.log(text);
+			for (var i = 0; i < text.length; i++) {
+				char_val = text.charCodeAt(i) + key.charCodeAt(i_key);
+				if (char_val > 126)
+					char_val -= (126 - 31);
+				i_key++;
+				if (i_key >= key.length)
+					i_key = 0;
+				console.log(i_key);
+				output += String.fromCharCode(char_val);
+			}
+			$('#output_text').val(output);
+		}
+
+		function dechiffre() {
+			var text = $('#input_text').val();
+			var key = $('#input_key').val();
+			var output = "";
+			var i_key = 0;
+			var	char = "";
+			var char_val = 0;
+
+			console.log(text);
+			for (var i = 0; i < text.length; i++) {
+				char_val = text.charCodeAt(i) - key.charCodeAt(i_key); 
+				if (char_val < 32)
+					char_val += (126 - 31);
+				i_key++;
+				if (i_key >= key.length)
+					i_key = 0;
+				console.log(i_key);
+				output += String.fromCharCode(char_val);
+			}
+			$('#output_text').val(output);
+		}
+	</script>
+</html>
